@@ -2,7 +2,7 @@ use std::io; //not sure this is necessary, but I can't tell now cause I'm testin
 use std::f64;
 use std::collections;
 
-fn check(mut s: u64, n: u64, ip: u64) -> u64 {
+fn check(mut s: u128, n: u128, ip: u128) -> u128 {
     if (n % ip) == 0 { //this function should handle divisors higher than sqrt of the number
         s = s + ip;
     }
@@ -11,6 +11,7 @@ fn check(mut s: u64, n: u64, ip: u64) -> u64 {
 
 fn main() {
     //large test number will be 2305843008139952128
+    //larger test numbers exist, but are 10^18 times larger, and take days to compute
     //another test number is 137438691328
     //small test numbers are 6, 28, 496, and 8128
     //const n: u64 = 2305843008139952128;
@@ -30,11 +31,11 @@ fn main() {
     //otherwise whitespace gets in the way
     //to_string() was used because trim produces a different kind of string than is required for parse()
 
-    let n: u64 = user_input.parse().unwrap(); //changes string to u64
+    let n: u128 = user_input.parse().unwrap(); //changes string to u128
 
     let f = n as f64;
     let _root = f.sqrt(); //this square root massively reduces time complexity
-    let iterations = _root.round() as u64;
+    let iterations = _root.round() as u128;
 
     if n > 1000000 { //this number should be roughly enough that loading feedback is required during execution
         //should display a loading bar
@@ -42,9 +43,10 @@ fn main() {
             if (n % i) == 0 { //this checks for all of a number's divisors
                 s = s + i; //this adds the divisor to the total
                 stack.push(i);
-                println!("Iteration {}/{}", i, iterations); //I know this is a bad way to do this lol
+                println!("Computing: {}/{}", i, iterations); //I know this is a bad way to do this lol
                 //printing within the if statement keeps it from printing way too many times
                 //printing out of iterations gives a realistic idea of execution time left
+                //changed to print out of 1000 for easier to read output
             }
         }
 
