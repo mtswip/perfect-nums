@@ -2,12 +2,9 @@ use std::io; //not sure this is necessary, but I can't tell now cause I'm testin
 use std::f64;
 use std::collections;
 
-fn check(mut s: u64, n: u64, ip: u64, feedback: bool) -> u64 {
+fn check(mut s: u64, n: u64, ip: u64) -> u64 {
     if (n % ip) == 0 { //this function should handle divisors higher than sqrt of the number
         s = s + ip;
-        if feedback {
-            println!("Iteration {}/{}", ip, n);
-        }
     }
     return s;
 }
@@ -16,7 +13,7 @@ fn main() {
     //large test number will be 2305843008139952128
     //another test number is 137438691328
     //small test numbers are 6, 28, 496, and 8128
-    const n: u64 = 137438691328; //eventually planning to change to mut u64
+    const n: u64 = 2305843008139952128; //eventually planning to change to mut u64
     let mut s = 0;
     let mut stack = Vec::new();
     
@@ -37,8 +34,9 @@ fn main() {
             if (n % i) == 0 { //this checks for all of a number's divisors
                 s = s + i; //this adds the divisor to the total
                 stack.push(i);
-                println!("Iteration {}/{}", i, n); //I know this is a bad way to do this lol
+                println!("Iteration {}/{}", i, iterations); //I know this is a bad way to do this lol
                 //printing within the if statement keeps it from printing way too many times
+                //printing out of iterations gives a realistic idea of execution time left
             }
         }
 
@@ -49,7 +47,7 @@ fn main() {
                 None => 0,
             };
             let ip = n / popped;
-            s = check(s, n, ip, true);
+            s = check(s, n, ip);
         }
 
         stack.pop(); //to fully empty the stack
@@ -70,7 +68,7 @@ fn main() {
                 None => 0,
             };
             let ip = n / popped;
-            s = check(s, n, ip, false);
+            s = check(s, n, ip);
         }
 
         stack.pop();
