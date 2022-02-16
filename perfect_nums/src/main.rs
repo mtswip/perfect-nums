@@ -13,19 +13,27 @@ fn main() {
     //large test number will be 2305843008139952128
     //another test number is 137438691328
     //small test numbers are 6, 28, 496, and 8128
-    const n: u64 = 2305843008139952128; //eventually planning to change to mut u64
+    //const n: u64 = 2305843008139952128;
+    //the previous line was commented out because input is now taken
+
     let mut s = 0;
     let mut stack = Vec::new();
+    let mut user_input = String::new();
     
-    //will worry about input later
-    //println!("Input the number: ");
+    println!("Input the number: "); //output for input
 
-    //io::stdin()
-        //.read_line(&mut n)
-        //.expect("Failed to read input");
+    io::stdin()
+        .read_line(&mut user_input) //input with exception for failure to read input
+        .expect("Failed to read input");
+
+    user_input = user_input.trim().to_string(); //input trimmed to ensure it can be parsed to a u64
+    //otherwise whitespace gets in the way
+    //to_string() was used because trim produces a different kind of string than is required for parse()
+
+    let n: u64 = user_input.parse().unwrap(); //changes string to u64
 
     let f = n as f64;
-    let _root = f.sqrt();
+    let _root = f.sqrt(); //this square root massively reduces time complexity
     let iterations = _root.round() as u64;
 
     if n > 1000000 { //this number should be roughly enough that loading feedback is required during execution
@@ -51,6 +59,7 @@ fn main() {
         }
 
         stack.pop(); //to fully empty the stack
+        //you could also just count the final value then divide by 2, but I don't want to
     }
 
     else { //this does the for loop without the print statement to prevent clutter for short execution times
