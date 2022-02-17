@@ -1,4 +1,4 @@
-use std::io; //not sure this is necessary, but I can't tell now cause I'm testing a very large number
+use std::io;
 use std::f64;
 use std::collections;
 
@@ -47,6 +47,7 @@ fn main() {
                 //printing within the if statement keeps it from printing way too many times
                 //printing out of iterations gives a realistic idea of execution time left
                 //changed to print out of 1000 for easier to read output
+                //replacing this with a loading bar is probably the biggest thing left to do
             }
         }
 
