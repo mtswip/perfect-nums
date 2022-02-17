@@ -36,19 +36,23 @@ fn main() {
     let _root = f.sqrt(); //this square root massively reduces time complexity
     let iterations = _root.round() as u128;
 
-    if n > 1000000 { //this number should be roughly enough that loading feedback is required during execution
+    if n > 1000000000000000 { //this number should be roughly enough that loading feedback is required during execution
+        let bar = ProgressBar::new(iterations as u64);
         //should display a loading bar
+        println!("Note that loading bar will slow as program progresses"); //this alerts user to a necessary slowing of the loading bar
         for i in 1..iterations+1 {
             if (n % i) == 0 { //this checks for all of a number's divisors
                 s = s + i; //this adds the divisor to the total
                 stack.push(i);
-                println!("Computing: {}/{}", i, iterations); //I know this is a bad way to do this lol
-                //printing within the if statement keeps it from printing way too many times
+                bar.inc(i as u64); //printing within the if statement keeps the loading bar from massively slowing the program
                 //printing out of iterations gives a realistic idea of execution time left
                 //changed to print out of 1000 for easier to read output
-                //replacing this with a loading bar is probably the biggest thing left to do
             }
         }
+
+        bar.finish();
+
+        let bar0 = ProgressBar::new((stack.len() - 1) as u64);
 
         while stack.len() > 1 {
             let enm = stack.pop();
@@ -56,9 +60,14 @@ fn main() {
                 Some(number) => number,
                 None => 0,
             };
+
             let ip = n / popped;
             s = check(s, n, ip);
+
+            bar0.inc(1);
         }
+
+        bar0.finish();
 
         stack.pop(); //to fully empty the stack
         //you could also just count the final value then divide by 2, but I don't want to
