@@ -24,9 +24,7 @@ fn main() {
     
     println!("Input the number: "); //output for input
 
-    io::stdin()
-        .read_line(&mut user_input) //input with exception for failure to read input
-        .expect("Failed to read input");
+    io::stdin().read_line(&mut user_input).expect("Failed to read input"); //input with exception for failure to read input
 
     user_input = user_input.trim().to_string(); //input trimmed to ensure it can be parsed to a u64
     //otherwise whitespace gets in the way
