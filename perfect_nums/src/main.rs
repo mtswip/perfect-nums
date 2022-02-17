@@ -1,6 +1,7 @@
 use std::io;
 use std::f64;
-use std::collections;
+//use std::collections; cargo says I don't need this idk
+//use indicatif::ProgressBar;
 
 fn check(mut s: u128, n: u128, ip: u128) -> u128 {
     if (n % ip) == 0 { //this function should handle divisors higher than sqrt of the number
