@@ -1,6 +1,7 @@
 use std::io;
 use std::f64;
 use indicatif::ProgressBar; //this crate should provide a progress bar
+use indicatif::ProgressStyle; //this allows for styling
 //use std::collections; cargo says I don't need this for Vec, idk
 
 fn check(mut s: u128, n: u128, ip: u128) -> u128 {
@@ -13,6 +14,8 @@ fn check(mut s: u128, n: u128, ip: u128) -> u128 {
 fn main() {
     //large test number will be 2305843008139952128
     //larger test numbers exist, but are 10^18 times larger, and take days to compute
+    //The square root of the 9th perfect number (which determines this algorithm's time complexity) is ~1,073,000,000 times larger
+    //I estimate that the algorithm would take ~1900 years to determine if it is perfect
     //another test number is 137438691328
     //small test numbers are 6, 28, 496, and 8128
     //const n: u64 = 2305843008139952128;
@@ -39,12 +42,18 @@ fn main() {
     if n > 1000000000000000 { //this number should be roughly enough that loading feedback is required during execution
         let bar = ProgressBar::new(iterations as u64);
         //should display a loading bar
+
+        bar.set_style(ProgressStyle::default_bar().template("[{percent}%] {wide_bar}").progress_chars("=>-"));
+        //the line above displays the bar with a percent, which is more useful to users
+        //it also has the bar fill the command line space
+
         println!("Note that loading bar will slow as program progresses"); //this alerts user to a necessary slowing of the loading bar
         for i in 1..iterations+1 {
             if (n % i) == 0 { //this checks for all of a number's divisors
                 s = s + i; //this adds the divisor to the total
                 stack.push(i);
-                bar.inc(i as u64); //printing within the if statement keeps the loading bar from massively slowing the program
+                bar.inc((i/2) as u64); //i/2 produces accurate loading bar
+                //printing within the if statement keeps the loading bar from massively slowing the program
                 //printing out of iterations gives a realistic idea of execution time left
                 //changed to print out of 1000 for easier to read output
             }
@@ -53,6 +62,8 @@ fn main() {
         bar.finish();
 
         let bar0 = ProgressBar::new((stack.len() - 1) as u64);
+
+        bar0.set_style(ProgressStyle::default_bar().template("[{percent}%] {wide_bar}").progress_chars("=>-"));
 
         while stack.len() > 1 {
             let enm = stack.pop();
@@ -73,7 +84,7 @@ fn main() {
         //you could also just count the final value then divide by 2, but I don't want to
     }
 
-    else { //this does the for loop without the print statement to prevent clutter for short execution times
+    else { //this does the for loop without the loading bar to prevent clutter for short execution times
         for i in 1..iterations+1 {
             if (n % i) == 0 { //this checks for all of a number's divisors
                 s = s + i; //this adds the divisor to the total
